@@ -1,0 +1,7 @@
+{
+  "name": "OdontoSistemas - Clínica Dental Moderna",
+  "description": "Sistema integral para la Clínica Dental OdontoSistemas con catálogo de servicios interactivo, agendamiento de citas en tiempo real y panel de doctores.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

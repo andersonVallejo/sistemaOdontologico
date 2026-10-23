@@ -1,0 +1,55 @@
+{
+  "entities": {
+    "CitaDental": {
+      "title": "Cita Dental",
+      "description": "Registro de cita médica dental agendada en la clínica OdontoSistemas",
+      "type": "object",
+      "properties": {
+        "codigo": {
+          "type": "string",
+          "description": "Código aleatorio único de confirmación de la cita, ej. ODO-8492"
+        },
+        "nombre": {
+          "type": "string",
+          "description": "Nombre completo del paciente"
+        },
+        "telefono": {
+          "type": "string",
+          "description": "Número telefónico del paciente"
+        },
+        "servicio": {
+          "type": "string",
+          "description": "Especialidad o servicio dental seleccionado"
+        },
+        "fecha": {
+          "type": "string",
+          "description": "Fecha programada de la cita dental"
+        },
+        "hora": {
+          "type": "string",
+          "description": "Hora programada de la cita dental"
+        },
+        "estado": {
+          "type": "string",
+          "description": "Estado actual de la cita",
+          "enum": ["pendiente", "completada", "cancelada"]
+        },
+        "notas": {
+          "type": "string",
+          "description": "Notas u observaciones adicionales del paciente"
+        },
+        "creado_en": {
+          "type": "string",
+          "description": "Fecha o timestamp de creación"
+        }
+      },
+      "required": ["codigo", "nombre", "telefono", "servicio", "fecha", "hora", "estado"]
+    }
+  },
+  "firestore": {
+    "/citas_dentales/{citaId}": {
+      "schema": "CitaDental",
+      "description": "Colección de citas dentales agendadas para pacientes y gestionadas por los doctores de OdontoSistemas"
+    }
+  }
+}

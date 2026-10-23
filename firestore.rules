@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper to validate appointment structure
+    function isValidCita(data) {
+      return data.keys().hasAll(['codigo', 'nombre', 'telefono', 'servicio', 'fecha', 'hora', 'estado']) &&
+             data.codigo is string && data.codigo.size() >= 3 && data.codigo.size() <= 32 &&
+             data.nombre is string && data.nombre.size() >= 2 && data.nombre.size() <= 120 &&
+             data.telefono is string && data.telefono.size() >= 6 && data.telefono.size() <= 40 &&
+             data.servicio is string && data.servicio.size() >= 2 && data.servicio.size() <= 100 &&
+             data.fecha is string && data.fecha.size() >= 8 && data.fecha.size() <= 30 &&
+             data.hora is string && data.hora.size() >= 3 && data.hora.size() <= 30 &&
+             data.estado in ['pendiente', 'completada', 'cancelada'];
+    }
+
+    match /citas_dentales/{citaId} {
+      // Allow reading for real-time schedule consultation and doctor panel
+      allow read: if true;
+
+      // Allow patients to book appointments with strict structure validation
+      allow create: if isValidCita(request.resource.data);
+
+      // Allow updating appointment status ('completada', 'cancelada') or notes
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasAny(['estado', 'notas']) &&
+                       request.resource.data.estado in ['pendiente', 'completada', 'cancelada'];
+
+      // Allow cancellation/deletion
+      allow delete: if true;
+    }
+  }
+}
